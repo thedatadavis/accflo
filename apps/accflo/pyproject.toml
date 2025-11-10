@@ -1,0 +1,43 @@
+[build-system]
+# Standard build system definition. `uv` respects this.
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# This is the standard (PEP 621) project metadata
+name = "accflo"
+version = "0.1.0"
+description = "Accflo: Accounting as Code for Modern SaaS"
+readme = "README.md"
+authors = [
+    { name = "Christopher Davis", email = "chris@bootstrapital.com" },
+]
+license = { text = "Apache License 2.0" }
+requires-python = ">=3.10"
+
+# Your core dependencies from the product spec
+dependencies = [
+    "click",        # For the CLI (`acc`)
+    "polars",       # For the transform engine
+    "pyarrow",      # For Iceberg/Polars interop
+    "duckdb",       # For the compute layer
+    "dlt",          # For ingestion pipelines
+    "pyiceberg",    # For the subledger storage format
+    "dbt-core",     # For the analytics layer
+]
+
+[project.optional-dependencies]
+# Optional dependencies, e.g., for specific ERP connectors
+dev = [
+    "pytest",
+    "ruff",
+]
+netsuite = [
+    "netsuite-rest", # Example
+]
+
+# --- THIS IS THE MOST IMPORTANT PART ---
+[project.scripts]
+# This line tells Python's installer to create a command named `acc`
+# that points to the `cli` function inside the `accflo.cli` module.
+acc = "accflo.cli:cli"
